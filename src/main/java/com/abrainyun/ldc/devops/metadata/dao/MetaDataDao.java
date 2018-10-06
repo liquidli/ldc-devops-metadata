@@ -20,7 +20,13 @@ public class MetaDataDao {
 		PageHelper.orderBy("TENANT_ID ASC,json->'name' ASC");
 		return metaDataBaseMapper.select(condition);
 	}
-
+	
+	public List<MetaData> getAllMetaField() {
+		MetaData condition = new MetaData();
+		condition.setTypeName("metaField");
+		PageHelper.orderBy("TENANT_ID ASC,json->'name' ASC");
+		return metaDataBaseMapper.select(condition);
+	}
 	public int selectCount() {
 		return metaDataBaseMapper.selectCount(null);
 	}

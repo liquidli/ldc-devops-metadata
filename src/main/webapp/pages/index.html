@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>数据源比较</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<script src="http://libs.baidu.com/jquery/2.1.4/jquery.min.js"></script>
+</head>
+<body>
+	<center><h5>数据源比较</h5>
+
+	<br/>
+	<hr/>
+	<br/>
+	<table >
+	<tr >
+<!-- 		<th width="100">序号</th> -->
+		<th width="100">表</th>
+		<th width="100">表名称</th>
+		<th width="100">数据源</th>
+		<th width="100">是否异常</th>
+		<th width="100">异常原因</th>
+	</tr>
+	<!-- 仅数据源1有的表 -->
+	<span th:each="value,iterStat : ${onlyOneExistTableList}" >
+	 <tr  style="background-color:red ">
+	 
+<!-- 	 <td th:text="${iterStat.index}"></td> -->
+	 <th scope="row" th:text="${value}"></th>
+	 <td ></td>
+	 <td >数据源1</td>
+	 <td >
+	 是
+	 </td>
+	 <td >数据源2没有该表</td>
+	 </tr>
+	</span>
+	<!-- 仅数据源2有的表 -->
+	<span th:each="value,iterStat : ${onlyTwoExistTableList}">
+	 <tr  style="background-color:red ">
+	 
+<!-- 	 <td th:text="${iterStat.index}"></td> -->
+	 <th scope="row" th:text="${value}"></th>
+	 <td ></td>
+	 <td >数据源2</td>
+	 <td >
+	 是
+	 </td>
+	 <td >数据源2没有该表</td>
+	 </tr>
+	</span>
+	
+	<!-- 数据源都有的表 -->
+	<span th:each="collect,iterStat : ${resultList}">
+	 <tr th:if="${collect.is_exception!='1'}"  style="background-color:#eee " align="center" onclick='showOrHide(this)' >
+	 <input id="table_name" type="hidden" th:value="${collect.table_name}"/>
+	 
+<!-- 	 <td th:text="${iterStat.index}"></td> -->
+	 <th scope="row" th:text="${collect.table_name}"></th>
+	 <td th:text="${collect.table_label}"></td>
+	 <td >数据源1，数据源2</td>
+	 <td >
+	 <div th:if="${collect.is_exception=='1'}">是</div>
+	 <div th:if="${collect.is_exception!='1'}">否</div>
+	 </td>
+	 <td th:text="${collect.reason}"></td>
+	 </tr>
+	  <tr th:if="${collect.is_exception=='1'}"  style="background-color:red " align="center" onclick='showOrHide(this)'>
+	  <input id="table_name" type="hidden" th:value="${collect.table_name}"/>
+	  <th scope="row" th:text="${collect.table_name}"></th>
+	 <td th:text="${collect.table_label}"></td>
+	 <td >数据源1，数据源2</td>
+	 <td >
+	 <div th:if="${collect.is_exception=='1'}">是</div>
+	 <div th:if="${collect.is_exception!='1'}">否</div>
+	 </td>
+	 <td th:text="${collect.reason}"></td>
+	 </tr>
+	 
+	 <tr th:id="${collect.table_name}" >
+	 
+	<td colspan="5" width="100%" align="center">
+	 <table width="90%">
+	<tr >
+		
+		<td width="100" align="center">表字段</td>
+		<td width="100" align="center">字段名称</td>
+		<td width="100" align="center">数据源</td>
+		<td width="100" align="center">是否异常</td>
+		<td width="100" align="center">异常原因</td>
+	</tr>
+	<!-- 数据源1仅有的字段 -->
+	<span th:each="value,iterStat2 : ${collect.onlyOneExistFieldList }">
+	 <tr style="background-color:red " >
+	 
+	 <th scope="row" th:text="${value}"></th>
+	 <td ></td>
+	 <td >数据源1</td>
+	 <td >
+	 是
+	 </td>
+	 <td >该表的该字段仅数据源1有</td>
+	 </tr>
+	</span>
+	<!-- 数据源2仅有的字段 -->
+	<span th:each="value,iterStat2 : ${collect.onlyTwoExistFieldList }">
+	 <tr  style="background-color:red ">
+	 
+	 <th scope="row" th:text="${value}"></th>
+	 <td ></td>
+	 <td >数据源2</td>
+	 <td >
+	 是
+	 </td>
+	 <td >该表的该字段仅数据源2有</td>
+	 </tr>
+	</span>
+	<!-- 数据源两者都有，但是类型不匹配 -->
+	<span th:each="field,iterStat2 : ${collect.exceptionfieldList }">
+	 <tr  style="background-color:red ">
+	 
+	 <th scope="row" th:text="${field.field_name}"></th>
+	 <td th:text="${field.field_label}"></td>
+	 <td >数据源1，数据源2</td>
+	 <td >
+	 <div th:if="${field.is_exception=='1'}">是</div>
+	 <div th:if="${field.is_exception!='1'}">否</div>
+	 </td>
+	 <td th:text="${field.reason}"></td>
+	 </tr>
+	</span>
+	
+	<span th:each="field,iterStat2 : ${collect.fieldList }">
+	 <tr  >
+	 
+	 <th scope="row" th:text="${field.field_name}"></th>
+	 <td th:text="${field.field_label}"></td>
+	 <td >数据源1，数据源2</td>
+	 <td >
+	 <div th:if="${field.is_exception=='1'}">是</div>
+	 <div th:if="${field.is_exception!='1'}">否</div>
+	 </td>
+	 <td th:text="${field.reason}"></td>
+	 </tr>
+	</span>
+	
+	
+	  </table>
+	  </td>
+	
+	 </tr>
+	
+	 </span>
+	 </table>
+	 </center>
+</body>
+<script type="text/javascript">
+function showOrHide(obj){
+	var id="#"+$(obj).find("#table_name").val();
+	var display =$(id).css('display');
+	if(display == 'none'){
+		$(id).show();
+	}else{
+		$(id).hide();
+	}
+	
+}
+
+
+</script>
+</html>
