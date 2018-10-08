@@ -7,7 +7,9 @@
 </head>
 <body>
 	<center><h5>数据源比较</h5>
-
+<form action="/dataSourceCompare" method="post">
+     快速查詢:<input  th:if="${isChecked!='1'}" id="isChecked" type="checkbox" name="isChecked" value="1" /> <input  th:if="${isChecked=='1'}" id="isChecked" type="checkbox" name="isChecked" checked="checked" value="1" /><input type="submit" value="查詢" />
+</form>
 	<br/>
 	<hr/>
 	<br/>

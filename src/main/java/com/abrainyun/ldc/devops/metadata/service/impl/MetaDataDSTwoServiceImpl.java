@@ -76,6 +76,7 @@ public class MetaDataDSTwoServiceImpl implements MetaDataService {
 								tempMap.put(String.valueOf(metaFieldData.getMappedJson().get("name"))+"~field_name",String.valueOf(metaFieldData.getMappedJson().get("name")));
 								tempMap.put(String.valueOf(metaFieldData.getMappedJson().get("name"))+"~field_type",String.valueOf(metaFieldData.getMappedJson().get("fieldType")) );
 								tempMap.put(String.valueOf(metaFieldData.getMappedJson().get("name"))+"~field_label",String.valueOf(metaFieldData.getMappedJson().get("label")) );
+								tempMap.put(String.valueOf(metaFieldData.getMappedJson().get("name"))+"~field_updated",String.valueOf(metaFieldData.getUpdated().getTime()) );
 							}
 						}
 					}

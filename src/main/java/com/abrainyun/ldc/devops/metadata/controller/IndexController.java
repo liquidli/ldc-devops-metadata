@@ -62,32 +62,25 @@ public class IndexController {
 
 		return res;
 	}
-	//@RequestMapping(value = "/index",method = RequestMethod.GET)
-		@GetMapping("/dataSourceCompare") 
-	  public ModelAndView dataSourceCompare(){
-			int count01 = metaDataOneService.selectCount();
-			List<MetaData> data01 =  metaDataOneService.getAllMetaEntity();
-
-			int count02 = metaDataTwoService.selectCount();
-			List<MetaData> data02 =  metaDataTwoService.getAllMetaEntity();
-
-			Map<String, Object> attr01 = new HashMap<>();
-			attr01.put("entityCount", count01);
-			attr01.put("entityData", data01);
-
-			Map<String, Object> attr02 = new HashMap<>();
-			attr02.put("entityCount", count02);
-			attr02.put("entityData", data02);
-
+	
+	/**
+	 * 首页访问
+	 * @return
+	 */
+	@GetMapping("/index") 
+	public ModelAndView index2(){
+		   ModelAndView mv = new ModelAndView("index");   
+		    return mv;  
+	}
+	/**
+	 * 数据结构比较
+	 * dataSourceCompare
+	 * @param isChecked 1 选中快速查询 其他没有选中
+	 * @return
+	 */
+	  @RequestMapping(value = "/dataSourceCompare",method = RequestMethod.POST)
+	  public ModelAndView dataSourceCompare(String isChecked){
 			Map<String, Object> okAttr = new HashMap<>();
-			okAttr.put("attr01", attr01);
-			okAttr.put("attr02", attr02);   
-		    String uri="54433";
-		    //Map<String, Object> okAttr = new HashMap<>();
-			okAttr.put("uri", uri);
-			
-			
-			
 			LinkedHashMap<String ,LinkedHashMap<String,String>>  metaDataSourceOne =   metaDataOneService.getMetaEntities();
 			LinkedHashMap<String ,LinkedHashMap<String,String>>  metaDataSourceTwo =   metaDataTwoService.getMetaEntities();
 			List<Map<String,Object>> resultList =new ArrayList<Map<String,Object>>();
@@ -118,7 +111,7 @@ public class IndexController {
 					}else {
 						obj.put("reason","无");
 					}
-					this.compareField(obj,oneFieldMap, twoFieldMap,is_exception);
+					this.compareField(obj,oneFieldMap, twoFieldMap,is_exception,isChecked);
 					if("1".equals(obj.get("is_exception"))) {
 						exceptionList.add(obj);
 					}else {
@@ -140,12 +133,12 @@ public class IndexController {
 			okAttr.put("resultList", resultList);
 			okAttr.put("onlyOneExistTableList", onlyOneExistTableList);
 			okAttr.put("onlyTwoExistTableList", onlyTwoExistTableList);
-			
+			okAttr.put("isChecked", isChecked);
 		    ModelAndView mv = new ModelAndView("index",okAttr);   
 	    return mv;  
 	  }
 	
-	 private void compareField(HashMap<String,Object> obj,LinkedHashMap<String,String> oneFieldMap,LinkedHashMap<String,String> twoFieldMap,String is_exception) {
+	 private void compareField(HashMap<String,Object> obj,LinkedHashMap<String,String> oneFieldMap,LinkedHashMap<String,String> twoFieldMap,String is_exception,String isChecked) {
 		 	String is_exceptiontemp="";
 			//只有数据源one中的表存在的字段
 			Map<String,String> onlyOneExistFieldMap=new HashMap<String,String>();
@@ -154,29 +147,38 @@ public class IndexController {
 			List<Map<String,String>> fieldList=new ArrayList<Map<String,String>>();
 			for(Map.Entry<String, String> entry:oneFieldMap.entrySet()) {
 				if(entry.getKey().indexOf("~field_name")>-1) {
-					if(!twoFieldMap.containsKey(entry.getKey())){
+					if(!twoFieldMap.containsKey(entry.getKey())){//只有数据源one中的表存在的字段
 						is_exception="1";
 						onlyOneExistFieldMap.put(entry.getKey(), entry.getKey());
 						onlyOneExistFieldList.add( entry.getKey());
-					}else {
+					}else {//同时在两个数据源中
 						String field_name=entry.getValue();
 						String field_label=oneFieldMap.get(field_name+"~field_label");
 						String field_type1=oneFieldMap.get(field_name+"~field_type");
 						String field_type2=twoFieldMap.get(field_name+"~field_type");
+						String field_updated1=oneFieldMap.get(field_name+"~field_updated");
+						String field_updated2=twoFieldMap.get(field_name+"~field_updated");
 						Map<String,String> fieldMap=new HashMap<>();
 						fieldMap.put("field_name", field_name);
 						fieldMap.put("field_label", field_label);
 						fieldMap.put("field_type1", field_type1);
 						fieldMap.put("field_type2", field_type2);
-						if(!field_type1.equals(field_type2)) {
-							is_exception="1";
-							is_exceptiontemp="1";
-							fieldMap.put("reason", "数据源1类型【"+field_type1+"】与数据源2类型【"+field_type2+"】不一致");
-							exceptionfieldList.add(fieldMap);
-						}else {
+						if("1".equals(isChecked)&&field_updated1.equals(field_updated2)) {//开启快速比较
 							is_exceptiontemp="0";
 							fieldMap.put("reason", "无");
 							fieldList.add(fieldMap);
+						}else {
+							//现在只是比较字段类型不同 此处以后可扩展
+							if(!field_type1.equals(field_type2)) {
+								is_exception="1";
+								is_exceptiontemp="1";
+								fieldMap.put("reason", "数据源1类型【"+field_type1+"】与数据源2类型【"+field_type2+"】不一致");
+								exceptionfieldList.add(fieldMap);
+							}else {
+								is_exceptiontemp="0";
+								fieldMap.put("reason", "无");
+								fieldList.add(fieldMap);
+							}
 						}
 						fieldMap.put("is_exception", is_exceptiontemp);
 					}
