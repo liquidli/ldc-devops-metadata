@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -33,33 +34,36 @@ public class IndexController {
 	private MetaDataService metaDataTwoService;
 
 	@GetMapping("/")
-	public ResponseEntity<Map<String, Object>> index() {
-		int count01 = metaDataOneService.selectCount();
-		List<MetaData> data01 =  metaDataOneService.getAllMetaEntity();
-
-		int count02 = metaDataTwoService.selectCount();
-		List<MetaData> data02 =  metaDataTwoService.getAllMetaEntity();
-
-		Map<String, Object> attr01 = new HashMap<>();
-		attr01.put("entityCount", count01);
-		attr01.put("entityData", data01);
-
-		Map<String, Object> attr02 = new HashMap<>();
-		attr02.put("entityCount", count02);
-		attr02.put("entityData", data02);
-
-		Map<String, Object> okAttr = new HashMap<>();
-//		okAttr.put("attr01", attr01);
-//		okAttr.put("attr02", attr02);
-		LinkedHashMap<String ,LinkedHashMap<String,String>> resMap=   metaDataOneService.getMetaEntities();
-		okAttr.put("resMap", resMap);
+	public ModelAndView index() {
+//		int count01 = metaDataOneService.selectCount();
+//		List<MetaData> data01 =  metaDataOneService.getAllMetaEntity();
+//
+//		int count02 = metaDataTwoService.selectCount();
+//		List<MetaData> data02 =  metaDataTwoService.getAllMetaEntity();
+//
+//		Map<String, Object> attr01 = new HashMap<>();
+//		attr01.put("entityCount", count01);
+//		attr01.put("entityData", data01);
+//
+//		Map<String, Object> attr02 = new HashMap<>();
+//		attr02.put("entityCount", count02);
+//		attr02.put("entityData", data02);
+//
+//		Map<String, Object> okAttr = new HashMap<>();
+////		okAttr.put("attr01", attr01);
+////		okAttr.put("attr02", attr02);
+//		LinkedHashMap<String ,LinkedHashMap<String,String>> resMap=   metaDataOneService.getMetaEntities();
+//		okAttr.put("resMap", resMap);
+//		
+//		
+//		
+//		
+//		ResponseEntity<Map<String, Object>> res = new ResponseEntity<Map<String, Object>>(okAttr, HttpStatus.OK);
 		
 		
-		
-		
-		ResponseEntity<Map<String, Object>> res = new ResponseEntity<Map<String, Object>>(okAttr, HttpStatus.OK);
 
-		return res;
+		ModelAndView mv = new ModelAndView("redirect:index");   
+	    return mv;
 	}
 	
 	/**
@@ -77,7 +81,8 @@ public class IndexController {
 	 * @param isChecked 1 选中快速查询 其他没有选中
 	 * @return
 	 */
-	  @RequestMapping(value = "/dataSourceCompare",method = RequestMethod.POST)
+//	  @RequestMapping(value = "/dataSourceCompare",method = RequestMethod.POST)
+	  @PostMapping("/dataSourceCompare")
 	  public ModelAndView dataSourceCompare(String isChecked){
 			Map<String, Object> okAttr = new HashMap<>();
 			LinkedHashMap<String ,LinkedHashMap<String,String>>  metaDataSourceOne =   metaDataOneService.getMetaEntities();
