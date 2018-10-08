@@ -4,6 +4,11 @@
 <title>数据源比较</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <script src="http://libs.baidu.com/jquery/2.1.4/jquery.min.js"></script>
+<style type="text/css">
+	.row {
+		cursor: pointer;
+	}
+</style>
 </head>
 <body>
 	<center><h5>数据源比较</h5>
@@ -14,7 +19,7 @@
 	<hr/>
 	<br/>
 	<table >
-	<tr >
+	<tr>
 <!-- 		<th width="100">序号</th> -->
 		<th width="100">表</th>
 		<th width="100">表名称</th>
@@ -53,7 +58,7 @@
 	
 	<!-- 数据源都有的表 -->
 	<span th:each="collect,iterStat : ${resultList}">
-	 <tr th:if="${collect.is_exception!='1'}"  style="background-color:#eee " align="center" onclick='showOrHide(this)' >
+	 <tr th:if="${collect.is_exception!='1'}"  style="background-color:#eee " class="row" align="center" onclick='showOrHide(this)' >
 	 <input id="table_name" type="hidden" th:value="${collect.table_name}"/>
 	 
 <!-- 	 <td th:text="${iterStat.index}"></td> -->
@@ -66,7 +71,7 @@
 	 </td>
 	 <td th:text="${collect.reason}"></td>
 	 </tr>
-	  <tr th:if="${collect.is_exception=='1'}"  style="background-color:red " align="center" onclick='showOrHide(this)'>
+	  <tr th:if="${collect.is_exception=='1'}"  style="background-color:red " class="row" align="center" onclick='showOrHide(this)'>
 	  <input id="table_name" type="hidden" th:value="${collect.table_name}"/>
 	  <th scope="row" th:text="${collect.table_name}"></th>
 	 <td th:text="${collect.table_label}"></td>
