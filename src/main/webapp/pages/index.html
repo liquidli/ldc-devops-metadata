@@ -73,8 +73,8 @@
 	 </tr>
 	  <tr th:if="${collect.is_exception=='1'}"  style="background-color:red " class="row" align="center" onclick='showOrHide(this)'>
 	  <input id="table_name" type="hidden" th:value="${collect.table_name}"/>
-	  <th scope="row" th:text="${collect.table_name}"></th>
-	 <td th:text="${collect.table_label}"></td>
+	  <th align="left" scope="row" th:text="${collect.table_name}"></th>
+	 <td align="left" th:text="${collect.table_label}"></td>
 	 <td align="center">数据源1，数据源2</td>
 	 <td align="center">
 	 <div th:if="${collect.is_exception=='1'}">是</div>
