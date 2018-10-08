@@ -21,24 +21,24 @@
 	<table >
 	<tr>
 <!-- 		<th width="100">序号</th> -->
-		<th width="100">表</th>
-		<th width="100">表名称</th>
-		<th width="100">数据源</th>
-		<th width="100">是否异常</th>
-		<th width="100">异常原因</th>
+		<th width="100" >表</th>
+		<th width="100" >表名称</th>
+		<th width="100" >数据源</th>
+		<th width="100" >是否异常</th>
+		<th width="100" >异常原因</th>
 	</tr>
 	<!-- 仅数据源1有的表 -->
 	<span th:each="value,iterStat : ${onlyOneExistTableList}" >
 	 <tr  style="background-color:red ">
 	 
 <!-- 	 <td th:text="${iterStat.index}"></td> -->
-	 <th scope="row" th:text="${value}"></th>
-	 <td ></td>
-	 <td >数据源1</td>
-	 <td >
+	 <th align="left" scope="row" th:text="${value}"></th>
+	 <td align="left" ></td>
+	 <td align="center">数据源1</td>
+	 <td align="center">
 	 是
 	 </td>
-	 <td >数据源2没有该表</td>
+	 <td align="center">数据源2没有该表</td>
 	 </tr>
 	</span>
 	<!-- 仅数据源2有的表 -->
@@ -46,13 +46,13 @@
 	 <tr  style="background-color:red ">
 	 
 <!-- 	 <td th:text="${iterStat.index}"></td> -->
-	 <th scope="row" th:text="${value}"></th>
-	 <td ></td>
-	 <td >数据源2</td>
-	 <td >
+	 <th align="left" scope="row" th:text="${value}"></th>
+	 <td align="left" ></td>
+	 <td align="center">数据源2</td>
+	 <td align="center">
 	 是
 	 </td>
-	 <td >数据源2没有该表</td>
+	 <td align="center">数据源2没有该表</td>
 	 </tr>
 	</span>
 	
@@ -62,25 +62,25 @@
 	 <input id="table_name" type="hidden" th:value="${collect.table_name}"/>
 	 
 <!-- 	 <td th:text="${iterStat.index}"></td> -->
-	 <th scope="row" th:text="${collect.table_name}"></th>
-	 <td th:text="${collect.table_label}"></td>
-	 <td >数据源1，数据源2</td>
-	 <td >
+	 <th align="left" scope="row" th:text="${collect.table_name}"></th>
+	 <td align="left" th:text="${collect.table_label}"></td>
+	 <td align="center">数据源1，数据源2</td>
+	 <td align="center">
 	 <div th:if="${collect.is_exception=='1'}">是</div>
 	 <div th:if="${collect.is_exception!='1'}">否</div>
 	 </td>
-	 <td th:text="${collect.reason}"></td>
+	 <td th:text="${collect.reason}" align="center"></td>
 	 </tr>
 	  <tr th:if="${collect.is_exception=='1'}"  style="background-color:red " class="row" align="center" onclick='showOrHide(this)'>
 	  <input id="table_name" type="hidden" th:value="${collect.table_name}"/>
 	  <th scope="row" th:text="${collect.table_name}"></th>
 	 <td th:text="${collect.table_label}"></td>
-	 <td >数据源1，数据源2</td>
-	 <td >
+	 <td align="center">数据源1，数据源2</td>
+	 <td align="center">
 	 <div th:if="${collect.is_exception=='1'}">是</div>
 	 <div th:if="${collect.is_exception!='1'}">否</div>
 	 </td>
-	 <td th:text="${collect.reason}"></td>
+	 <td align="center" th:text="${collect.reason}"></td>
 	 </tr>
 	 
 	 <tr th:id="${collect.table_name}" style="display: none;" >
